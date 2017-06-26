@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Minio Blob Storage
+name: minio
+version: 0.1.0
