@@ -22,3 +22,5 @@ service:
 
 ingress:
   enabled: false
+
+secretName: storage-key

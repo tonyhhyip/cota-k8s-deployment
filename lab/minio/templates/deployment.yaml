@@ -38,10 +38,10 @@ spec:
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: core-storage-key
+                  name: {{ .Values.secretName }}
                   key: accessKey
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: core-storage-key
+                  name: {{ .Values.secretName }}
                   key: secretKey
