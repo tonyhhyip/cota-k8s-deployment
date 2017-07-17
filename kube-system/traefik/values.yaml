@@ -7,6 +7,9 @@ cpuRequest: 100m
 memoryRequest: 20Mi
 cpuLimit: 100m
 memoryLimit: 30Mi
+rbac:
+  enabled: true
+  account: traefik-ingress-controller
 ssl:
   enabled: true
   enforced: false

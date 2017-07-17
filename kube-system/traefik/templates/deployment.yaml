@@ -1,16 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    method: helm
-    deploymeny: {{ .Release.Name }}
   name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
-    method: helm
 spec:
   replicas: {{ default 1 .Values.replicas }}
   selector:
@@ -24,10 +20,16 @@ spec:
         release: "{{ .Release.Name }}"
         heritage: "{{ .Release.Service }}"
     spec:
+      {{- if .Values.rbac.enabled }}
+      serviceAccountName: {{ .Values.rbac.account }}
+      {{- else }}
+      serviceAccountName: default
+      {{- end }}
       terminationGracePeriodSeconds: 60
       containers:
       - image: {{ .Values.image }}:{{ .Values.imageTag }}
         name: {{ template "fullname" . }}
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: "{{.Values.cpuRequest}}"
