@@ -1,0 +1,49 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: sitcon-cfp
+  labels:
+    owner: SITCON
+    app: sitcon-cfp
+    dummy: "1"
+spec:
+  template:
+    metadata:
+      labels:
+        app: sitcon-cfp
+        owner: SITCON
+    spec:
+      containers:
+        - name: sitcon-cfp
+          image: tonyhhyip/sitcon-cfp:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cfp-db
+                  key: host
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cfp-db
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: cfp-db
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cfp-db
+                  key: dbName
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: cfp-db
+                  key: secretKey
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"

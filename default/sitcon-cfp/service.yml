@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sitcon-cfp
+  labels:
+    owner: SITCON
+    app: sitcon-cfp
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    owner: SITCON
+    app: sitcon-cfp
