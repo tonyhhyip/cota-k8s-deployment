@@ -1,0 +1,63 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: cota-wordpress-dev
+  labels:
+    owner: cota
+    app: wordpress-dev
+    stage: dev
+spec:
+  template:
+    metadata:
+      labels:
+        owner: cota
+        app: wordpress-dev
+        stage: dev
+    spec:
+      imagePullSecrets:
+        - name: gcr
+      volumes:
+        - name: upload
+          azureFile:
+            secretName: cotablob-file
+            shareName: cota-wordpress
+            readOnly: false
+      containers:
+        - name: wordpress
+          image: gcr.io/cota-k8s/cota-wordpress:dev
+          imagePullPolicy: Always
+          livenessProbe:
+            tcpSocket:
+              port: service
+            timeoutSeconds: 1
+          volumeMounts:
+            - name: upload
+              mountPath: /var/www/html/wp-content/uploads
+          ports:
+            - containerPort: 80
+              name: service
+          env:
+            - name: WORDPRESS_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cota-wp-mysql
+                  key: dbHost
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cota-wp-mysql
+                  key: dbName
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cota-wp-mysql
+                  key: dbUser
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cota-wp-mysql
+                  key: dbPassword
+            - name: WORDPRESS_WP_HOME
+              value: https://hkcota-wp-dev.ysitd.cloud/
+            - name: WORDPRESS_WP_SITEURL
+              value: https://hkcota-wp-dev.ysitd.cloud/

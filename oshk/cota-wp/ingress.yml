@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cota-wordpress-dev
+  labels:
+    owner: cota
+    app: wordpress-dev
+    stage: dev
+spec:
+  rules:
+    - host: cota.hk
+      http:
+        paths:
+          - backend:
+              serviceName: cota-wordpress-dev
+              servicePort: 80
+            path: /
+    - host: www.cota.hk
+      http:
+        paths:
+          - backend:
+              serviceName: cota-wordpress-dev
+              servicePort: 80
