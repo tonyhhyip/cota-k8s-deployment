@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: account-manager
+  labels:
+    app: account
+    owner: tonyhhyip
+    dummy: "1"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account
+        owner: tonyhhyip
+    spec:
+      containers:
+        - name: account-manager
+          image: ysitd/cloud-account:latest
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "80"
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: account-db
+                  key: dbUrl
+            - name: REDIS_ADDRESS
+              value: redis.kube-public:6379
+            - name: REDIS_DB
+              value: "1"
+            - name: SESSION_NAME
+              value: ysitd
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

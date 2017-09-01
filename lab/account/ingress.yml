@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: account-manager
+  labels:
+    app: account
+    owner: tonyhhyip
+spec:
+  rules:
+    - host: account.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: account-manager
+              servicePort: 80
