@@ -15,9 +15,10 @@ spec:
     spec:
       volumes:
         - name: upload-file
-          azureDisk:
-            diskName: upload.vhd
-            diskURI: https://00lh7gva4cu6rswagnt0.blob.core.windows.net/vhds/upload.vhd
+          azureFile:
+            secretName: cotablob-files
+            shareName: sitcon-cfp
+            readOnly: false
       containers:
         - name: sitcon-cfp
           image: tonyhhyip/sitcon-cfp:latest
