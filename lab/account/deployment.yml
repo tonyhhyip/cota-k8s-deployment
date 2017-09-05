@@ -19,6 +19,8 @@ spec:
           image: ysitd/cloud-account:latest
           imagePullPolicy: Always
           env:
+            - name: STATIC_ADDRESS
+              value: "https://assets.ysitd.cloud"
             - name: PORT
               value: "80"
             - name: DB_URL
