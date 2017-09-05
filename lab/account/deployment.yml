@@ -29,7 +29,7 @@ spec:
                   name: account-db
                   key: dbUrl
             - name: REDIS_ADDRESS
-              value: redis.kube-public:6379
+              value: account-redis.lab:6379
             - name: REDIS_DB
               value: "1"
             - name: SESSION_NAME
