@@ -1,18 +1,17 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: cota-wordpress-dev
+  name: cota-wordpress
   labels:
     owner: cota
-    app: wordpress-dev
-    stage: dev
+    app: wordpress
 spec:
   template:
     metadata:
       labels:
         owner: cota
-        app: wordpress-dev
-        stage: dev
+        app: wordpress
+        stage: beta
     spec:
       imagePullSecrets:
         - name: gcr
@@ -24,8 +23,7 @@ spec:
             readOnly: false
       containers:
         - name: wordpress
-          image: gcr.io/cota-k8s/cota-wordpress:dev
-          imagePullPolicy: Always
+          image: gcr.io/cota-k8s/cota-wordpress:2.1.0
           livenessProbe:
             tcpSocket:
               port: service
@@ -57,7 +55,3 @@ spec:
                 secretKeyRef:
                   name: cota-wp-mysql
                   key: dbPassword
-            - name: WORDPRESS_WP_HOME
-              value: https://hkcota-wp-dev.ysitd.cloud/
-            - name: WORDPRESS_WP_SITEURL
-              value: https://hkcota-wp-dev.ysitd.cloud/
