@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: status
+    owner: tonyhhyip
+  name: status-api
+spec:
+  ports:
+  - name: status
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: status
+    owner: tonyhhyip
+  type: ClusterIP
