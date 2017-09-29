@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: drone-agent
+  labels:
+    app: drone
+    role: agent
+    owner: tonyhhyip
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drone
+        role: agent
+        owner: tonyhhyip
+    spec:
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+      containers:
+        - name: drone-agent
+          image: drone/agent:0.8
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-socket
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 3
+          env:
+            - name: DOCKER_VERSION
+              value: "1.24"
+            - name: DRONE_HEALTHCHECK
+              value: "true"
+            - name: DRONE_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: drone
+                  key: agent.debug
+            - name: DRONE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: drone
+                  key: DRONE_SECRET
+            - name: DRONE_SERVER
+              value: drone.lab:9000

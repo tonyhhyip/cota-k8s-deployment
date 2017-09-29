@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: drone
+data:
+  server.host: drone.ysitd.cloud
+  server.debug: "true"
+  server.open: "false"
+  agent.debug: "true"

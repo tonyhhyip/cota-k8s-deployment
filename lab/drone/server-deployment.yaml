@@ -1,0 +1,99 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: drone-master
+  labels:
+    app: drone
+    role: master
+    owner: tonyhhyip
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drone
+        role: master
+        owner: tonyhhyip
+    spec:
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+      containers:
+        - name: drone-master
+          image: drone/drone:0.8
+          env:
+            - name: DRONE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: drone
+                  key: server.host
+            - name: DRONE_OPEN
+              valueFrom:
+                 configMapKeyRef:
+                   name: drone
+                   key: server.open
+            - name: DRONE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: drone
+                  key: DRONE_SECRET
+            - name: DRONE_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: drone
+                  key: DRONE_ADMIN
+            - name: DRONE_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: drone
+                  key: server.debug
+            - name: DRONE_DATABASE_DRIVER
+              valueFrom:
+                secretKeyRef:
+                  name: drone
+                  key: DB_DRIVER
+            - name: DRONE_DATABASE_DATASOURCE
+              valueFrom:
+                secretKeyRef:
+                  name: drone
+                  key: DB_URL
+            - name: DRONE_GITHUB
+              value: "true"
+            - name: DRONE_GITHUB_URL
+              value: "https://github.com"
+            - name: DRONE_GITHUB_CLIENT
+              valueFrom:
+                secretKeyRef:
+                  name: drone-github
+                  key: GITHUB_CLIENT_ID
+            - name: DRONE_GITHUB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: drone-github
+                  key: GITHUB_CLIENT_SECRET
+            - name: DRONE_GITHUB_SCOPE
+              value: "repo,repo:status,user:email,read:org"
+            - name: DRONE_GITHUB_PRIVATE_MODE
+              value: "false"
+            - name: DRONE_GITHUB_MERGE_REF
+              value: "true"
+            - name: DRONE_GITHUB_CONTEXT
+              value: "continuous-integration/drone"
+            - name: DRONE_GITHUB_SKIP_VERIFY
+              value: "false"
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-socket
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+            - containerPort: 9000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 16Mi
