@@ -1,0 +1,34 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+    usage: monitor
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+        usage: monitor
+    spec:
+      containers:
+        - name: mongo
+          image: bitnami/mongodb:3.4.9-r1
+          resources:
+            limits:
+              memory: 1024Mi
+              cpu: 100m
+            requests:
+              memory: 16Mi
+              cpu: 10m
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /bitnami/mongodb
+              name: data
+      volumes:
+        - name: data
+          emptyDir: {}
