@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: status-api
+  labels:
+    app: status
+    owner: tonyhhyip
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: status
+        owner: tonyhhyip
+    spec:
+      containers:
+        - name: statis-api
+          image: ysitd/cloud-status:0.0.1
+          env:
+            - name: TRAEFIK_ENDPOINT
+              value: "traefik-web.kube-system"
+            - name: LISTEN_ADDRESS
+              value: ":80"
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 16Mi

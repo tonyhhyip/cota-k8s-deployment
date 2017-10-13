@@ -1,0 +1,73 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: graylog
+  labels:
+    app: graylog
+    usage: monitor
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: graylog
+        usage: monitor
+    spec:
+      containers:
+        - name: graylog
+          image: graylog/graylog:2.3.1-2
+          resources:
+            limits:
+              memory: 1024Mi
+              cpu: 100m
+            requests:
+              memory: 16Mi
+              cpu: 10m
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+              name: web
+            - containerPort: 514
+              protocol: TCP
+              name: syslog
+            - containerPort: 12201
+              protocol: TCP
+              name: gelf
+          volumeMounts:
+            - mountPath: /usr/share/graylog/data/journal
+              name: data
+          env:
+            - name: GRAYLOG_ELASTICSEARCH_HOSTS
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_ELASTICSEARCH_HOSTS
+            - name: GRAYLOG_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_MONGODB_URI
+            - name: GRAYLOG_PASSWORD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_PASSWORD_SECRET
+            - name: GRAYLOG_ROOT_PASSWORD_SHA256
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_ROOT_PASSWORD_SHA256
+            - name: GRAYLOG_ROOT_TIMEZONE
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_ROOT_TIMEZONE
+            - name: GRAYLOG_WEB_ENDPOINT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: graylog
+                  key: GRAYLOG_WEB_ENDPOINT_URI
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: graylog
