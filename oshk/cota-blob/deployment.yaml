@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hkcota-minio
+  labels:
+    app: minio
+    account: hkcota
+    owner: hkcota
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minio
+        account: hkcota
+        owner: hkcota
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:RELEASE.2017-09-29T19-16-56Z
+          commands:
+          args:
+            - gateway
+            - azure
+          env:
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hkcota-storage-key
+                  key: accessKey
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hkcota-storage-key
+                  key: secretKey
+          ports:
+            - containerPort: 9000

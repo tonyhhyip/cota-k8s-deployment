@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hkcota-minio
+  labels:
+    app: minio
+    account: hkcota
+    owner: hkcota
+spec:
+  ports:
+  - name: account
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: minio
+    account: hkcota
+    owner: hkcota
+  type: ClusterIP
