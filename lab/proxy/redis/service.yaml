@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-proxy-redis
+  labels:
+    app: auth-proxy-redis
+    owner: tonyhhyip
+spec:
+  ports:
+  - name: http
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: auth-proxy-redis
+    owner: tonyhhyip
+  type: ClusterIP

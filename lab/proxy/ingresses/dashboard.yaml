@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kube-dashboard
+  labels:
+    app: kube-dashboard
+    owner: tonyhhyip
+spec:
+  rules:
+    - host: dashboard.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: auth-proxy
+              servicePort: 80

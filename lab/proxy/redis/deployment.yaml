@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: auth-proxy-redis
+  labels:
+    app: auth-proxy-redis
+    owner: tonyhhyip
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-proxy-redis
+        owner: tonyhhyip
+    spec:
+      containers:
+        - name: auth-proxy-redis
+          image: redis:3-alpine
+          ports:
+            - containerPort: 6379

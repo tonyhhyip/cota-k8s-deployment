@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: auth-proxy
+  labels:
+    app: auth-proxy
+    owner: tonyhhyip
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-proxy
+        owner: tonyhhyip
+    spec:
+      containers:
+        - name: auth-proxy
+          image: ysitd/cloud-auth-proxy
+          env:
+            - name: DASHBOARD_ID
+              valueFrom:
+                secretKeyRef:
+                  name: proxy-key
+                  key: DASHBOARD_ID
+            - name: DASHBOARD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: proxy-key
+                  key: DASHBOARD_SECRET
+          ports:
+            - containerPort: 80
