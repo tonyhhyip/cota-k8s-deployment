@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jaeger-query
+  labels:
+    app: jaeger
+    jaeger-infra: query-service
+spec:
+  rules:
+    - host: trace.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jaeger-query
+              servicePort: 80

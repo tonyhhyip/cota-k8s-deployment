@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jaeger-collector
+  labels:
+    app: jaeger
+    jaeger-infra: collector-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jaeger
+        jaeger-infra: collector-pod
+    spec:
+      containers:
+      - env:
+        - name: COLLECTOR_ZIPKIN_HTTP_PORT
+          value: "9411"
+        image: jaegertracing/jaeger-collector:0.8
+        name: jaeger-collector
+        ports:
+        - containerPort: 14267
+          protocol: TCP
+        - containerPort: 14268
+          protocol: TCP
+        - containerPort: 9411
+          protocol: TCP
+        command:
+          - "/go/bin/collector-linux"
+          - "--span-storage.type=elasticsearch"
+          - "--es.server-urls=http://elasticsearch.kube-system:9200"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
