@@ -13,9 +13,10 @@ spec:
         app: status
         owner: tonyhhyip
     spec:
+      serviceAccountName: status-api
       containers:
         - name: statis-api
-          image: ysitd/cloud-status:0.0.1
+          image: ysitd/cloud-status:1.0.0
           env:
             - name: TRAEFIK_ENDPOINT
               value: "traefik-web.kube-system"
