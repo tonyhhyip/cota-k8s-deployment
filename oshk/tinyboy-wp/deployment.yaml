@@ -1,0 +1,56 @@
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: tinyboy-wordpress
+  labels:
+    owner: tinyboy
+    app: wordpress
+spec:
+  template:
+    metadata:
+      labels:
+        owner: tinyboy
+        app: wordpress
+    spec:
+      imagePullSecrets:
+        - name: acr
+      volumes:
+        - name: upload
+          azureFile:
+            secretName: cotablob-file
+            shareName: tinyboy-wordpress
+            readOnly: false
+      containers:
+        - name: wordpress
+          image: hkcota.azurecr.io/tinyboy/wordpress:1.0.0
+          livenessProbe:
+            tcpSocket:
+              port: service
+            timeoutSeconds: 1
+          volumeMounts:
+            - name: upload
+              mountPath: /var/www/html/wp-content/uploads
+          ports:
+            - containerPort: 80
+              name: service
+          env:
+            - name: WORDPRESS_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tinyboy-wp-mysql
+                  key: dbHost
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tinyboy-wp-mysql
+                  key: dbName
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tinyboy-wp-mysql
+                  key: dbUser
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tinyboy-wp-mysql
+                  key: dbPassword

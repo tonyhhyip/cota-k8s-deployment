@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tinyboy-wordpress
+  labels:
+    owner: tinyboy
+    app: wordpress
+spec:
+  selector:
+    owner: tinyboy
+    app: wordpress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
