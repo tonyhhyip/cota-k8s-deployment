@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: packager
+  labels:
+    app: packager
+    owner: tonyhhyip
+spec:
+  rules:
+    - host: npm.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: packager
+              servicePort: 80
