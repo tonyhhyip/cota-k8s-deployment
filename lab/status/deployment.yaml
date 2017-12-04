@@ -22,6 +22,23 @@ spec:
               value: "traefik-web.kube-system"
             - name: LISTEN_ADDRESS
               value: ":80"
+            - name: SERVICE_NAMESPACE
+              value: lab
+            - name: CF_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: status-cdn
+                  key: CF_EMAIL
+            - name: CF_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: status-cdn
+                  key: CF_KEY
+            - name: CF_ZONE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: status-cdn
+                  key: CF_ZONE_ID
           ports:
             - containerPort: 80
           resources:
