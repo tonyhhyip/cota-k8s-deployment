@@ -3,19 +3,18 @@ kind: Service
 metadata:
   annotations:
     usage: internal
-  labels:
-    app: traffic-traefik
-    chart: traefik-1.3.0
-    heritage: Tiller
-    release: traffic
   name: traefik-web
+  labels:
+    app: traefik
+    usage: monitor
   namespace: kube-system
 spec:
   ports:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 8081
+    targetPort: 8080
   selector:
-    app: traffic-traefik
+    app: traefik
+    usage: ingress-controller
   type: ClusterIP
