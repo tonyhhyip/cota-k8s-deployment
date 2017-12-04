@@ -1,16 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: cota-wordpress-dev
+  name: cota-wordpress
   labels:
     owner: cota
-    app: wordpress-dev
-    stage: dev
+    app: wordpress
 spec:
   selector:
     owner: cota
-    app: wordpress-dev
-    stage: dev
+    app: wordpress
   ports:
     - protocol: TCP
       port: 80

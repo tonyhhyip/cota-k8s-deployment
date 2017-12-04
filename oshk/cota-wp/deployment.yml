@@ -11,10 +11,9 @@ spec:
       labels:
         owner: cota
         app: wordpress
-        stage: beta
     spec:
       imagePullSecrets:
-        - name: gcr
+        - name: azr
       volumes:
         - name: upload
           azureFile:
@@ -23,7 +22,7 @@ spec:
             readOnly: false
       containers:
         - name: wordpress
-          image: gcr.io/cota-k8s/cota-wordpress:2.1.0
+          image: hkcota.azurecr.io/cota/wordpress:2.1.8
           livenessProbe:
             tcpSocket:
               port: service
