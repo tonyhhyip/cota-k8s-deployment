@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - image: ysitd/cloud-account-sidecar:1.6.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: renderer
         env:
           - name: DUMMY
@@ -65,6 +65,8 @@ spec:
         name: account-manager
         ports:
         - containerPort: 80
+          protocol: TCP
+        - containerPort: 8080
           protocol: TCP
         resources:
           limits:

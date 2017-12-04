@@ -12,6 +12,10 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 80
+  - name: sidecar
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
   selector:
     app: account
     owner: tonyhhyip

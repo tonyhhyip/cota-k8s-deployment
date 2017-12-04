@@ -5,6 +5,7 @@ metadata:
   labels:
     app: account
     owner: tonyhhyip
+    stage: rc
 spec:
   rules:
     - host: account.ysitd.cloud
@@ -14,3 +15,7 @@ spec:
             backend:
               serviceName: account-manager
               servicePort: 80
+          - path: /assets
+            backend:
+              serviceName: account-manager
+              servicePort: 8080

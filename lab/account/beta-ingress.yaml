@@ -15,3 +15,7 @@ spec:
             backend:
               serviceName: account-manager-beta
               servicePort: 80
+          - path: /assets
+            backend:
+              serviceName: account-manager-beta
+              servicePort: 8080

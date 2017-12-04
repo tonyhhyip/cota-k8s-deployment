@@ -4,6 +4,7 @@ metadata:
   labels:
     app: account
     owner: tonyhhyip
+    stage: rc
   name: account-manager
 spec:
   replicas: 2
@@ -11,6 +12,7 @@ spec:
     matchLabels:
       app: account
       owner: tonyhhyip
+      stage: rc
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -22,6 +24,7 @@ spec:
       labels:
         app: account
         owner: tonyhhyip
+        stage: rc
     spec:
       containers:
       - image: ysitd/cloud-account-sidecar:1.6.0
@@ -61,6 +64,8 @@ spec:
         name: account-manager
         ports:
         - containerPort: 80
+          protocol: TCP
+        - containerPort: 8080
           protocol: TCP
         resources:
           limits:
