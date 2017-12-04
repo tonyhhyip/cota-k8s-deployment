@@ -27,5 +27,9 @@ spec:
                 secretKeyRef:
                   name: proxy-key
                   key: DASHBOARD_SECRET
+            - name: OAUTH_HOST
+              value: "account.ysitd.cloud"
+            - name: REDIS_HOST
+              value: auth-proxy-redis
           ports:
             - containerPort: 80
