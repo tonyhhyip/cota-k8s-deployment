@@ -22,7 +22,7 @@ spec:
             readOnly: false
       containers:
         - name: wordpress
-          image: hkcota.azurecr.io/cota/wordpress:2.1.8
+          image: hkcota.azurecr.io/cota/wordpress:2.1.9
           livenessProbe:
             tcpSocket:
               port: service
