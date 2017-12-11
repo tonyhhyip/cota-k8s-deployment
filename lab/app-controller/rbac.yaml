@@ -1,8 +1,13 @@
-kind: ClusterRole
+kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: app-controller
+  namespace: lab
 rules:
+- apiGroups: [""]
+  resources:
+    - endpoints
+  verbs: ["get"]
 - apiGroups: [""]
   resources:
     - secrets
@@ -23,15 +28,16 @@ metadata:
   name: app-controller
   namespace: lab
 ---
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: app-controller
+  namespace: lab
 subjects:
 - kind: ServiceAccount
   name: app-controller
   namespace: app-controller
 roleRef:
-  kind: ClusterRole
+  kind: Role
   name: app-controller
   apiGroup: rbac.authorization.k8s.io

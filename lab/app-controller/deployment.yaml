@@ -29,7 +29,7 @@ spec:
               name: service
           env:
             - name: APP_NAMESPACE
-              value: users-app
+              value: lab
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
