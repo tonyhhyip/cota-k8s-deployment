@@ -26,8 +26,12 @@ spec:
         owner: tonyhhyip
         stage: beta
     spec:
+      volumes:
+        - name: cert
+          secret:
+            secretName: account-server-cert
       containers:
-      - image: ysitd/cloud-account-sidecar:1.6.0
+      - image: ysitd/cloud-account-sidecar:latest
         imagePullPolicy: Always
         name: renderer
         env:
@@ -49,6 +53,8 @@ spec:
           value: http://localhost:8080
         - name: LISTEN_PORT
           value: "80"
+        - name: CERT_PATH
+          value: /cert/grpc/account
         - name: DB_URL
           valueFrom:
             secretKeyRef:
@@ -60,14 +66,20 @@ spec:
           value: "1"
         - name: SESSION_NAME
           value: ysitd
-        image: ysitd/cloud-account:latest
+        image: ysitd/cloud-account:1.7-dev
         imagePullPolicy: Always
         name: account-manager
         ports:
-        - containerPort: 80
-          protocol: TCP
-        - containerPort: 8080
-          protocol: TCP
+          - containerPort: 80
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 50051
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /cert/grpc/account
+            name: cert
+            readOnly: true
         resources:
           limits:
             cpu: 100m
