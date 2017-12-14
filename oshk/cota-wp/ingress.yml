@@ -14,10 +14,6 @@ spec:
               serviceName: cota-wordpress
               servicePort: 80
             path: /
-          - backend:
-              serviceName: cota-nginx
-              servicePort: 80
-            path: /wp-content/uploads
     - host: www.cota.hk
       http:
         paths:
@@ -25,7 +21,3 @@ spec:
               serviceName: cota-wordpress
               servicePort: 80
             path: /
-          - backend:
-              serviceName: cota-nginx
-              servicePort: 80
-            path: /wp-content/uploads

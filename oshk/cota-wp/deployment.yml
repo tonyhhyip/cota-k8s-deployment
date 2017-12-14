@@ -21,18 +21,30 @@ spec:
             shareName: cota-wordpress
             readOnly: false
       containers:
-        - name: wordpress
-          image: hkcota.azurecr.io/cota/wordpress:2.1.9
+        - name: nginx
+          image: hkcota.azurecr.io/cota/wordpress:2.2.0-nginx
           livenessProbe:
             tcpSocket:
-              port: service
+              port: http
             timeoutSeconds: 1
           volumeMounts:
             - name: upload
               mountPath: /var/www/html/wp-content/uploads
           ports:
             - containerPort: 80
-              name: service
+              name: http
+        - name: fpm
+          image: hkcota.azurecr.io/cota/wordpress:2.2.0-fpm
+          livenessProbe:
+            tcpSocket:
+              port: fpm
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 9000
+              name: fpm
+          volumeMounts:
+            - name: upload
+              mountPath: /var/www/html/wp-content/uploads
           env:
             - name: WORDPRESS_DB_HOST
               valueFrom:
