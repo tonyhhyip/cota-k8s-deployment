@@ -1,11 +1,15 @@
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 metadata:
   name: cota-wordpress
   labels:
     owner: cota
     app: wordpress
 spec:
+  selector:
+    matchLabels:
+      owner: cota
+      app: wordpress
   template:
     metadata:
       labels:
@@ -20,6 +24,9 @@ spec:
             secretName: cotablob-file
             shareName: cota-wordpress
             readOnly: false
+        - name: config
+          configMap:
+            name: nginx-wordpress
       containers:
         - name: nginx
           image: hkcota.azurecr.io/cota/wordpress:2.2.0-nginx
@@ -30,6 +37,9 @@ spec:
           volumeMounts:
             - name: upload
               mountPath: /var/www/html/wp-content/uploads
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
           ports:
             - containerPort: 80
               name: http
@@ -46,6 +56,10 @@ spec:
             - name: upload
               mountPath: /var/www/html/wp-content/uploads
           env:
+            - name: WORDPRESS_WP_HOME
+              value: https://cota.hk
+            - name: WORDPRESS_WP_SITEURL
+              value: https://cota.hk
             - name: WORDPRESS_DB_HOST
               valueFrom:
                 secretKeyRef:

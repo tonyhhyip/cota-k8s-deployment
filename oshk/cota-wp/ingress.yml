@@ -15,10 +15,6 @@ spec:
           servicePort: 80
         path: /
       - backend:
-          serviceName: cota-nginx
-          servicePort: 80
-        path: /wp-content/uploads
-      - backend:
           serviceName: hkcota-minio
           servicePort: 9000
         path: /archive
@@ -29,10 +25,6 @@ spec:
           serviceName: cota-wordpress
           servicePort: 80
         path: /
-      - backend:
-          serviceName: cota-nginx
-          servicePort: 80
-        path: /wp-content/uploads
       - backend:
           serviceName: hkcota-minio
           servicePort: 9000
