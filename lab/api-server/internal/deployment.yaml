@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: api-server-internal
+  labels:
+    owner: tonyhhyip
+    app: api-server
+    usage: internal
+spec:
+  selector:
+    matchLabels:
+      owner: tonyhhyip
+      app: api-server
+      usage: internal
+  template:
+    metadata:
+      labels:
+        owner: tonyhhyip
+        app: api-server
+        usage: internal
+    spec:
+      serviceAccountName: app-controller
+      containers:
+        - name: apiserver
+          image: ysitd/cloud-apiserver:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: service
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 80
+              name: service
+          env:
+            - name: PORT
+              value: "80"
+            - name: DEPLOYER_ENDPOINT
+              value: http://app-controller.lab
