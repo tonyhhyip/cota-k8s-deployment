@@ -1,16 +1,16 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: jaeger-query
+  name: grafana
   labels:
-    app: jaeger
-    jaeger-infra: query-service
+    app: grafana
+    usage: monitor
 spec:
   rules:
-    - host: trace.ysitd.cloud
+    - host: grafana.ysitd.cloud
       http:
         paths:
           - path: /
             backend:
-              serviceName: jaeger-query
+              serviceName: grafana
               servicePort: 80
