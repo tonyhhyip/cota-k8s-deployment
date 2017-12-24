@@ -3,3 +3,5 @@ cluster:
     storageClass: share
     annotations:
       volume.beta.kubernetes.io/storage-class: share
+proxy:
+  replicas: 0
