@@ -1,0 +1,5 @@
+cluster:
+  persistentVolume:
+    storageClass: share
+    annotations:
+      volume.beta.kubernetes.io/storage-class: share
