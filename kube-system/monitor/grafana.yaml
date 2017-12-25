@@ -1,6 +1,9 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
+  labels:
+    app: grafana
+    usage: monitor
   name: grafana
   namespace: kube-system
 spec:
@@ -11,31 +14,17 @@ spec:
       usage: monitor
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: grafana
         usage: monitor
     spec:
       containers:
-      - name: grafana
-        image: gcr.io/google_containers/heapster-grafana-amd64:v4.4.3
-        ports:
-        - containerPort: 3000
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /etc/ssl/certs
-          name: ca-certificates
-          readOnly: true
-        - mountPath: /var
-          name: grafana-storage
-        env:
+      - env:
         - name: INFLUXDB_HOST
           value: influxdb
         - name: GF_SERVER_HTTP_PORT
           value: "3000"
-          # The following env variables are required to make Grafana accessible via
-          # the kubernetes api-server proxy. On production clusters, we recommend
-          # removing these env variables, setup auth for grafana, and expose the grafana
-          # service using a LoadBalancer or a public IP.
         - name: GF_AUTH_BASIC_ENABLED
           value: "false"
         - name: GF_AUTH_ANONYMOUS_ENABLED
@@ -43,15 +32,45 @@ spec:
         - name: GF_AUTH_ANONYMOUS_ORG_ROLE
           value: Admin
         - name: GF_SERVER_ROOT_URL
-          # If you're only using the API Server proxy, set this value instead:
-          # value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
           value: /
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "false"
+        - name: GF_PATHS_PLUGINS
+          value: /var/lib/grafana/plugins
+        - name: GF_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: DB_URL
+              name: grafana-db
+        - name: GF_DATABASE_SSL_MODE
+          valueFrom:
+            secretKeyRef:
+              key: SSL_MODE
+              name: grafana-db
+        image: gcr.io/google_containers/heapster-grafana-amd64:v4.4.3
+        imagePullPolicy: IfNotPresent
+        name: grafana
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/ssl/certs
+          name: ca-certificates
+          readOnly: true
+        - mountPath: /var/lib/grafana/plugins
+          name: grafana-storage
       volumes:
-      - name: ca-certificates
-        hostPath:
+      - hostPath:
           path: /etc/ssl/certs
-      - name: grafana-storage
-        emptyDir: {}
+          type: ""
+        name: ca-certificates
+      - azureFile:
+          secretName: lab-files
+          shareName: grafana
+        name: grafana-storage
 ---
 apiVersion: v1
 kind: Service
