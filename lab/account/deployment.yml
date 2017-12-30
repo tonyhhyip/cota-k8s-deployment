@@ -27,9 +27,12 @@ spec:
         stage: rc
     spec:
       containers:
-      - image: ysitd/cloud-account-sidecar:1.6.0
+      - image: ysitd/cloud-account-sidecar:1.7.2
         imagePullPolicy: IfNotPresent
         name: renderer
+        env:
+          - name: NODE_ENV
+            value: production
         resources:
           limits:
             cpu: 100m
@@ -37,7 +40,14 @@ spec:
           requests:
             cpu: 10m
             memory: 64Mi
-      - env:
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+            name: sidecar
+      - image: ysitd/cloud-account:1.7.2
+        imagePullPolicy: IfNotPresent
+        name: account-manager
+        env:
         - name: GIN_MODE
           value: release
         - name: STATIC_ADDRESS
@@ -59,14 +69,13 @@ spec:
           value: "1"
         - name: SESSION_NAME
           value: ysitd
-        image: ysitd/cloud-account:1.6.0
-        imagePullPolicy: IfNotPresent
-        name: account-manager
         ports:
         - containerPort: 80
           protocol: TCP
-        - containerPort: 8080
+          name: http
+        - containerPort: 50051
           protocol: TCP
+          name: grpc
         resources:
           limits:
             cpu: 100m

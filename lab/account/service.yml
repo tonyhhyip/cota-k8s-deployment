@@ -8,7 +8,7 @@ metadata:
   name: account-manager
 spec:
   ports:
-  - name: account
+  - name: http
     port: 80
     protocol: TCP
     targetPort: 80
@@ -16,6 +16,10 @@ spec:
     port: 8080
     protocol: TCP
     targetPort: 8080
+  - name: grpc
+    port: 50051
+    protocol: TCP
+    targetPort: 50051
   selector:
     app: account
     owner: tonyhhyip

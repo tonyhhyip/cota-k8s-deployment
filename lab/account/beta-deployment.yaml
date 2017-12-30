@@ -44,6 +44,10 @@ spec:
           requests:
             cpu: 10m
             memory: 64Mi
+        ports:
+          - name: sidecar
+            containerPort: 8080
+            protocol: TCP
       - env:
         - name: DUMMY
           value: foo
@@ -72,10 +76,10 @@ spec:
         ports:
           - containerPort: 80
             protocol: TCP
-          - containerPort: 8080
-            protocol: TCP
+            name: http
           - containerPort: 50051
             protocol: TCP
+            name: grpc
         volumeMounts:
           - mountPath: /cert/grpc/account
             name: cert
