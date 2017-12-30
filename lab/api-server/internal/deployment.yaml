@@ -19,20 +19,21 @@ spec:
         app: api-server
         usage: internal
     spec:
-      serviceAccountName: app-controller
       containers:
         - name: apiserver
           image: ysitd/cloud-apiserver:latest
           imagePullPolicy: Always
           readinessProbe:
             tcpSocket:
-              port: service
+              port: http
             timeoutSeconds: 1
           ports:
             - containerPort: 80
-              name: service
+              name: http
           env:
             - name: PORT
               value: "80"
             - name: DEPLOYER_ENDPOINT
-              value: http://app-controller.lab
+              value: http://app-controller.lab:80
+            - name: ACCOUNT_ENDPOINT
+              value: account-manager-beta.lab:50051
