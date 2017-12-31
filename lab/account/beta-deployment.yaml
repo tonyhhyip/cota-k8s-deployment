@@ -26,10 +26,6 @@ spec:
         owner: tonyhhyip
         stage: beta
     spec:
-      volumes:
-        - name: cert
-          secret:
-            secretName: account-server-cert
       containers:
       - image: ysitd/cloud-account-sidecar:latest
         imagePullPolicy: Always
@@ -70,20 +66,19 @@ spec:
           value: "1"
         - name: SESSION_NAME
           value: ysitd
-        image: ysitd/cloud-account:1.7-dev
+        image: ysitd/cloud-account:1.8-dev
         imagePullPolicy: Always
         name: account-manager
         ports:
           - containerPort: 80
             protocol: TCP
             name: http
+          - containerPort: 50050
+            protocol: TCP
+            name: internal
           - containerPort: 50051
             protocol: TCP
             name: grpc
-        volumeMounts:
-          - mountPath: /cert/grpc/account
-            name: cert
-            readOnly: true
         resources:
           limits:
             cpu: 100m

@@ -16,6 +16,10 @@ spec:
     port: 8080
     protocol: TCP
     targetPort: 8080
+  - name: internal
+    port: 50050
+    protocol: TCP
+    targetPort: 50050
   - name: grpc
     port: 50051
     protocol: TCP
