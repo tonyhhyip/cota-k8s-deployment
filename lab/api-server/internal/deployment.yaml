@@ -36,4 +36,4 @@ spec:
             - name: DEPLOYER_ENDPOINT
               value: http://app-controller.lab:80
             - name: ACCOUNT_ENDPOINT
-              value: account-manager-beta.lab:50051
+              value: account-manager-beta.lab:50050
