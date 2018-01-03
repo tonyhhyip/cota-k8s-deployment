@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: console-internal
+  labels:
+    owner: tonyhhyip
+    app: console
+    usage: internal
+spec:
+  rules:
+    - host: console-internal.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: console-internal
+              servicePort: 80

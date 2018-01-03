@@ -1,0 +1,92 @@
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: console-internal
+  labels:
+    owner: tonyhhyip
+    app: console
+    usage: internal
+spec:
+  selector:
+    matchLabels:
+      owner: tonyhhyip
+      app: console
+      usage: internal
+  template:
+    metadata:
+      labels:
+        owner: tonyhhyip
+        app: console
+        usage: internal
+    spec:
+      containers:
+        - name: console
+          image: ysitd/cloud-console:1.0-dev
+          imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: PORT
+              value: "80"
+            - name: NODE_ENV
+              value: production
+            - name: REDIS_DB
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: REDIS_DB
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: REDIS_HOST
+            - name: API_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: API_ENDPOINT
+            - name: SESSION_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: SESSION_NAME
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: SESSION_SECRET
+            - name: OAUTH_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_HOST
+            - name: OAUTH_AUTHORIZE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_AUTHORIZE_URL
+            - name: OAUTH_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_TOKEN_URL
+            - name: OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_CLIENT_ID
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_CLIENT_SECRET
+            - name: OAUTH_CALLBACK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: console-internal
+                  key: OAUTH_CALLBACK_URL
