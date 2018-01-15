@@ -19,7 +19,7 @@ spec:
       serviceAccountName: app-controller
       containers:
         - name: controller
-          image: ysitd/cloud-app-controller:1.0.0
+          image: ysitd/cloud-app-controller:1.2-dev
           readinessProbe:
             tcpSocket:
               port: service
@@ -29,7 +29,7 @@ spec:
               name: service
           env:
             - name: APP_NAMESPACE
-              value: lab
+              value: core-apps
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
