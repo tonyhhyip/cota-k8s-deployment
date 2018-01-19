@@ -1,0 +1,70 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: kube-registry
+  namespace: kube-system
+  labels:
+    k8s-app: kube-registry
+    version: v0
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: kube-registry
+      version: v0
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-registry
+        version: v0
+        kubernetes.io/cluster-service: "true"
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: kube-registry
+            items:
+              - key: config.yml
+                path: config.yml
+      containers:
+        - name: registry
+          image: registry:2
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/docker/registry/config.yml
+              subPath: config.yml
+          env:
+            - name: REGISTRY_HTTP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kube-registry
+                  key: HTTP_SECRET
+            - name: REGISTRY_STORAGE_AZURE_ACCOUNTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: core-storage-key
+                  key: accessKey
+            - name: REGISTRY_STORAGE_AZURE_ACCOUNTKEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-storage-key
+                  key: secretKey
+            - name: REGISTRY_STORAGE_AZURE_CONTAINER
+              value: registry
+            - name: REGISTRY_STORAGE_DELETE_ENABLED
+              value: "true"
+            - name: REGISTRY_STORAGE_CACHE_BLOBDESCRIPTOR
+              value: inmemory
+            - name: REGISTRY_LOG_LEVEL
+              value: debug
+            - name: REGISTRY_HTTP_ADDR
+              value: ":5000"
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+              name: http
