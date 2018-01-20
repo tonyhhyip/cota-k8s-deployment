@@ -1,13 +1,3 @@
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  namespace: kube-public
-  name: rethinkdb
-rules:
-- apiGroups: [""]
-  resources: ["endpoints"]
-  verbs: ["get"]
----
 kind: ServiceAccount
 apiVersion: v1
 metadata:
@@ -22,7 +12,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: rethinkdb
+  name: cluster-service
 subjects:
   - kind: ServiceAccount
     namespace: kube-public
