@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+    owner: public
+spec:
+  type: ClusterIP
+  selector:
+    app: kibana
+    owner: public
+  ports:
+  - name: http
+    port: 5610
+    protocol: TCP
