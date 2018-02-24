@@ -5,7 +5,7 @@ metadata:
   labels:
     name: etcd-restore-operator
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:

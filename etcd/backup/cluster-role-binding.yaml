@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: backup-operator
-  namespace: controller
+  namespace: etcd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
