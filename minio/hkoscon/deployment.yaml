@@ -1,13 +1,13 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: hkoscon-blob
+  name: hkoscon
   labels:
     app: minio
     account: hkoscon
     owner: hkoscon
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: minio
@@ -31,12 +31,12 @@ spec:
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: hkoscon-blob
+                  name: hkoscon
                   key: accessKey
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: hkoscon-blob
+                  name: hkoscon
                   key: secretKey
           ports:
             - containerPort: 9000

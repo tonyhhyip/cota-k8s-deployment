@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hkoscon-blob
+  name: hkoscon
   labels:
     app: minio
     account: hkoscon
@@ -12,13 +12,13 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: hkoscon-blob
+          serviceName: hkoscon
           servicePort: 9000
         path: /
   - host: hkoscon-blob.tonyhhyip.me
     http:
       paths:
       - backend:
-          serviceName: hkoscon-blob
+          serviceName: hkoscon
           servicePort: 9000
         path: /
