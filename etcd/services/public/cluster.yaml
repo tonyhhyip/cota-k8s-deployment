@@ -4,7 +4,7 @@ metadata:
   name: public
 spec:
   size: 3
-  version: 3.3.1
+  version: 3.3.2
   pod:
     etcdEnv:
     - name: ETCD_AUTO_COMPACTION_RETENTION
