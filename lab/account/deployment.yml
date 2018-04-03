@@ -27,7 +27,7 @@ spec:
         stage: rc
     spec:
       containers:
-      - image: ysitd/cloud-account-sidecar:1.7.2
+      - image: ysitd/cloud-account-sidecar:1.8.1
         imagePullPolicy: IfNotPresent
         name: renderer
         env:
@@ -44,7 +44,7 @@ spec:
           - containerPort: 8080
             protocol: TCP
             name: sidecar
-      - image: ysitd/cloud-account:1.7.2
+      - image: ysitd/cloud-account:1.8.1
         imagePullPolicy: IfNotPresent
         name: account-manager
         env:

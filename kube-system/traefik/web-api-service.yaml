@@ -7,7 +7,6 @@ metadata:
   labels:
     app: traefik
     usage: monitor
-  namespace: kube-system
 spec:
   ports:
   - name: http

@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik-ingress
@@ -20,7 +20,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: traefik:1.4
+      - image: traefik:1.5
         name: ingress-controller
         readinessProbe:
           tcpSocket:
