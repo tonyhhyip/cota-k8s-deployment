@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: proxy
+spec:
+  backend:
+    serviceName: proxy
+    servicePort: 80
+  rules:
+    - host: npm.ysitd.cloud
+    - host: gem.ysitd.cloud
+    - host: docker.ysitd.cloud
+    - host: pypi.ysitd.cloud
