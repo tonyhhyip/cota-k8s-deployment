@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: proxy-redis
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app: auth-proxy-redis
+      owner: tonyhhyip
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: auth-proxy
+              owner: tonyhhyip
+      ports:
+        - protocol: TCP
+          port: 6379
