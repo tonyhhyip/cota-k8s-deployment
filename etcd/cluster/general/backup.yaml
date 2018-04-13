@@ -1,0 +1,12 @@
+apiVersion: etcd.database.coreos.com/v1beta2
+kind: EtcdBackup
+metadata:
+  name: general
+spec:
+  etcdCluster:
+    name: general
+  storageType: s3
+  s3:
+    path: etcd/general
+    awsSecret: backup
+    endpoint: http://storage.etcd
