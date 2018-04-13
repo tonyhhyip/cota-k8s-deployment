@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: account-redis
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app: account-redis
+      owner: tonyhhyip
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: account
+              owner: tonyhhyip
+              stage: rc
+      ports:
+        - protocol: TCP
+          port: 6379
