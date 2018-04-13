@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elasticsearch-data
@@ -29,7 +29,7 @@ spec:
             privileged: true
       containers:
         - name: es-data
-          image: quay.io/pires/docker-elasticsearch-kubernetes:6.1.2
+          image: quay.io/pires/docker-elasticsearch-kubernetes:6.2.3
           env:
             - name: NAMESPACE
               valueFrom:
@@ -52,12 +52,12 @@ spec:
             - name: AZURE_ACCOUNT_NAME
               valueFrom:
                 secretKeyRef:
-                  name: lab-storage
+                  name: azure-storage
                   key: AZURE_ACCOUNT_NAME
             - name: AZURE_ACCOUNT_KEY
               valueFrom:
                 secretKeyRef:
-                  name: lab-storage
+                  name: azure-storage
                   key: AZURE_ACCOUNT_KEY
             - name: AZURE_BUCKET_NAME
               value: elasticsearch

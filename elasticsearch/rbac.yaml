@@ -1,19 +1,26 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  namespace: kube-public
   name: elasticsearch
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: kube-public
   name: elasticsearch
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: cluster-service
+  name: endpoints-getter
 subjects:
   - kind: ServiceAccount
-    namespace: kube-public
+    namespace: elasticsearch
     name: elasticsearch
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: endpoints-getter
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get"]

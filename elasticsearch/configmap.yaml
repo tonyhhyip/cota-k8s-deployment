@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-name: es-entrypoint
+  name: es-entrypoint
 data:
   docker-entrypoint.sh: |
     #!/bin/sh
