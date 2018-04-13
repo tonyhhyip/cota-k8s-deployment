@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: general-etcd-peer
+spec:
+  podSelector:
+    matchLabels:
+      app: etcd
+      etcd_cluster: general
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: etcd
+          etcd_cluster: general
+    - podSelector:
+        matchLabels:
+          usage: operator
+          version: v1beta2.etcd.database.coreos.com
+    ports:
+      - protocol: TCP
+        port: 2379
+      - protocol: TCP
+        port: 2380
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: etcd
+          etcd_cluster: general
+    ports:
+    - protocol: TCP
+      port: 2380
+    - protocol: TCP
+      port: 2379
