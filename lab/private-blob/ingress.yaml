@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: private-minio
+  labels:
+    app: minio
+    account: core
+    owner: tonyhhyip
+spec:
+  rules:
+    - host: blob.ysitd.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: private-minio
+              servicePort: 9000

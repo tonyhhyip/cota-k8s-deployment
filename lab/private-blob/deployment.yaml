@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: private-minio
+  labels:
+    app: minio
+    account: private
+    owner: tonyhhyip
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: minio
+      account: private
+      owner: tonyhhyip
+  template:
+    metadata:
+      labels:
+        app: minio
+        account: private
+        owner: tonyhhyip
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:RELEASE.2018-04-04T05-20-54Z
+          commands:
+          args:
+            - gateway
+            - azure
+          env:
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: private-storage-key
+                  key: accessKey
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: private-storage-key
+                  key: secretKey
+          ports:
+            - containerPort: 9000
