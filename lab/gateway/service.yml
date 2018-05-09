@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gateway
+    owner: tonyhhyip
+  name: api-gateway
+spec:
+  ports:
+  - name: http
+    port: 50050
+    protocol: TCP
+    targetPort: 50050
+  - name: grpc
+    port: 50051
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app: gateway
+    owner: tonyhhyip
+  type: ClusterIP

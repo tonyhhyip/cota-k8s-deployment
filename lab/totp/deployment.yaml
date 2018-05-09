@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: totp
+    owner: tonyhhyip
+    stage: alpha
+  name: totp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: totp
+      owner: tonyhhyip
+      stage: alpha
+  template:
+    metadata:
+      labels:
+        app: totp
+        owner: tonyhhyip
+        stage: alpha
+    spec:
+      containers:
+      - image: ysitd/auth-totp
+        imagePullPolicy: Always
+        name: totp
+        env:
+          - name: VERBOSE
+            value: "1"
+          - name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                key: DB_URL
+                name: totp-db
+        ports:
+          - containerPort: 50050
+            protocol: TCP
+            name: http
+          - containerPort: 50051
+            protocol: TCP
+            name: grpc

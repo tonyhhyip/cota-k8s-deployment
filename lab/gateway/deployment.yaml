@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+    owner: tonyhhyip
+    stage: alpha
+  name: api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+      owner: tonyhhyip
+      stage: alpha
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        owner: tonyhhyip
+        stage: alpha
+    spec:
+      containers:
+      - image: ysitd/cloud-stage-images:api-gateway-09446c6
+        imagePullPolicy: IfNotPresent
+        name: gateway
+        env:
+          - name: VERBOSE
+            value: "1"
+          - name: ACCOUNT_ENDPOINT
+            value: account-manager:50051
+        ports:
+          - containerPort: 50050
+            protocol: TCP
+            name: http
+          - containerPort: 50051
+            protocol: TCP
+            name: grpc
