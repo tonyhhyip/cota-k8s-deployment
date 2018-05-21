@@ -3,10 +3,9 @@ kind: EtcdBackup
 metadata:
   name: general
 spec:
-  etcdCluster:
-    name: general
-  storageType: s3
+  etcdEndpoints: ["http://general:2379"]
+  storageType: S3
   s3:
-    path: etcd/general
+    path: storage/general
     awsSecret: backup
-    endpoint: http://storage.etcd
+    endpoint: http://etcd:9000
